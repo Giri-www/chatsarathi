@@ -18,6 +18,12 @@ BACKEND_HTTP_URL = os.getenv("ChatSarathi_BACKEND_URL", "http://localhost:8000")
 BACKEND_WS_URL = os.getenv("ChatSarathi_WS_URL", "ws://localhost:8000/api/ws/chat")
 
 
+
+def http_get_json(path: str) -> dict[str, Any]:
+    """Fetch JSON from the backend."""
+    with urllib_request.urlopen(f"{BACKEND_HTTP_URL}{path}") as response:
+        return json.loads(response.read().decode("utf-8"))
+
 def run_async(coro):
     """Run async coroutine safely inside Streamlit."""
     try:
@@ -28,11 +34,6 @@ def run_async(coro):
 
     return loop.run_until_complete(coro)
 
-
-def http_get_json(path: str) -> dict[str, Any]:
-    """Fetch JSON from the backend."""
-    with urllib_request.urlopen(f"{BACKEND_HTTP_URL}{path}") as response:
-        return json.loads(response.read().decode("utf-8"))
 
 
 def http_post_json(path: str, payload: dict[str, Any]) -> dict[str, Any]:
