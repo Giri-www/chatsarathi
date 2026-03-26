@@ -156,3 +156,4 @@ kubectl apply -f docker/k8s/service.yaml
 - When `ANTHROPIC_API_KEY` is not configured, ChatSarathi falls back to retrieval-grounded offline responses so the app can still boot and be demoed locally.
 - Tavily gracefully degrades when `TAVILY_API_KEY` is missing.
 - The analytics database defaults to `./ChatSarathi_analytics.db`.
+- Here I set up local ollama llama3.2:3b  for local setup 
