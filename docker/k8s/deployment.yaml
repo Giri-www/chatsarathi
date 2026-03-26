@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ChatSarathi-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ChatSarathi-backend
+  template:
+    metadata:
+      labels:
+        app: ChatSarathi-backend
+    spec:
+      containers:
+        - name: ChatSarathi-backend
+          image: ChatSarathi-backend:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: REDIS_URL
+              value: redis://ChatSarathi-redis:6379
+            - name: CHROMA_PERSIST_DIR
+              value: /data/chroma_db
+            - name: SQLITE_URL
+              value: sqlite+aiosqlite:////data/ChatSarathi_analytics.db
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ChatSarathi-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ChatSarathi-redis
+  template:
+    metadata:
+      labels:
+        app: ChatSarathi-redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:7-alpine
+          ports:
+            - containerPort: 6379
